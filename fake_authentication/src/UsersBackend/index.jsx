@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ApiClient } from '../utils/api';
+import './userBackend.css'
 
 const UsersBackend = () => {
 
@@ -19,7 +20,7 @@ const UsersBackend = () => {
                 setUsers(data.users)
                 const paginas = Math.ceil(data.total / pagination)
                 setTotalPagina(paginas)
-                
+
             }
         }
         getUsers()
@@ -99,6 +100,7 @@ const UsersBackend = () => {
                                     <th>Fecha de Nac.</th>
                                     <th>Contraseña</th>
                                     <th>Rol</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -118,6 +120,19 @@ const UsersBackend = () => {
                                         <td>{user.birthDate}</td>
                                         <td className="text-muted">{user.password}</td>
                                         <td>{user.role}</td>
+                                        <td className="actions-cell">
+                                            <button type="button" className="btn-action btn-edit" title="Editar">
+                                                <span>Editar</span>
+                                            </button>
+
+                                            <button type="button" className="btn-action btn-role" title="Asignar Rol">
+                                                <span>Rol</span>
+                                            </button>
+
+                                            <button type="button" className="btn-action btn-delete" title="Eliminar">
+                                                <span>Eliminar</span>
+                                            </button>
+                                        </td>
                                     </tr>
 
                                 ))}

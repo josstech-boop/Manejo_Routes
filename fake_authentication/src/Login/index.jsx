@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './login.css';
-import { ApiClient } from '../utils/api';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../Hooks';
 
 function Login() {
 
@@ -10,48 +10,15 @@ function Login() {
         password: '',
     })
 
-    const [error, setError] = useState(false)
-    const [message, setMessage] = useState('')
-    const [loading, setLoading] = useState(false)
+    const { error, message, loading, login } = useAuth()
+
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(localStorage.getItem('accessToken')){
+        if (localStorage.getItem('accessToken')) {
             navigate('/welcome')
         }
-    },[navigate])
-
-    const login = async (event) => {
-        event.preventDefault()
-        setLoading(true)
-
-        try {
-
-            setError(false)
-
-            setMessage('')
-            const { data: { accessToken, firstName, refreshToken } } = await ApiClient.post('/auth/login', form)
-            localStorage.setItem('accessToken', JSON.stringify(accessToken))
-            localStorage.setItem('firstName', JSON.stringify(firstName))
-            localStorage.setItem('refreshToken', JSON.stringify(refreshToken))
-            navigate('/welcome')
-
-            console.log(accessToken, firstName, refreshToken)
-
-
-        } catch (error) {
-
-            console.log(error.status)
-            console.log(error.response.data.message)
-
-            setError(true)
-            setMessage(error.response.data.message)
-
-        } finally {
-            setLoading(false)
-        }
-
-    }
+    }, [navigate])
 
     const OnChangeInput = (event) => {
         const { name, value } = event.target
@@ -63,6 +30,8 @@ function Login() {
         }))
     }
 
+    // emilys
+    // emilyspass
 
     return (
         <div className="login-container">
@@ -74,7 +43,7 @@ function Login() {
 
                 {error && <div className='mensajeError'><p >⚠️ {message} </p></div>}
 
-                <form className="login-form" onSubmit={login}>
+                <form className="login-form" onSubmit={(event) => login(event, form)}>
                     <div className="input-group">
                         <label htmlFor="username">Username</label>
                         <input
