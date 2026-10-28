@@ -13,8 +13,6 @@ createRoot(document.getElementById('root')).render(
 
     <AuthProvider>
 
-
-
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='*' element={<ProtectedRoutes />} />
